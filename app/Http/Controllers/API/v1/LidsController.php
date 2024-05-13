@@ -857,6 +857,11 @@ WHERE (l.`provider_id` = '" . $f_key->id . "'
       $n_lid->tel =  $req['umcfields']['phone'];
       $geo = $this->getGeo($n_lid->tel);
     }
+    $f_lid =  Lid::where('tel', '=', $n_lid->tel)->get();
+
+    if (!$f_lid->isEmpty()) {
+      return response('Duplicate', 200);
+    }
 
     if (isset($req['umcfields']['email']) && strlen($req['umcfields']['email']) > 1) {
       $n_lid->email = $req['umcfields']['email'];
