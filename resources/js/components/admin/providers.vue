@@ -117,13 +117,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon
-          small
-          v-if="$attrs.user.role_id == 1 && $attrs.user.office_id == 0"
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:item.report="{ item }">
         <statusesProvider :provider="item" />
