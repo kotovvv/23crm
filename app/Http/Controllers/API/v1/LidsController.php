@@ -278,10 +278,10 @@ class LidsController extends Controller
       $n_lid->dep_reg = $data['dep_reg'];
 
       if (isset($lid['name'])) {
-        $n_lid->name = mb_convert_encoding(substr(trim($lid['name']), 0, 50), 'WINDOWS-1251', 'UTF-8');
+        $n_lid->name = substr(trim($lid['name']), 0, 50);
       }
       if (isset($lid['lastname'])) {
-        $n_lid->name = $n_lid->name . ' ' . mb_convert_encoding(substr(trim($lid['lastname']), 0, 50), 'WINDOWS-1251', 'UTF-8');
+        $n_lid->name = $n_lid->name . ' ' . substr(trim($lid['lastname']), 0, 50);
         $n_lid->name = substr($n_lid->name, 0, 50);
       }
 
