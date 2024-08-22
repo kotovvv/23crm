@@ -238,6 +238,7 @@ class LidsController extends Controller
         $a_lid['text'] = $lid['text'];
       }
       $res =  DB::table('lids')->where('id', $lid['id'])->update($a_lid);
+
       if (isset($data['dellog']) && $data['dellog'] == 1) {
         $clear_lid = [
           'text' => '',
@@ -245,21 +246,17 @@ class LidsController extends Controller
         ];
         $res =  DB::table('lids')->where('id', $lid['id'])->update($clear_lid);
         Log::where('lid_id', $lid['id'])->delete();
-      }
-
-      $a_lid['lid_id'] = $lid['id'];
-      $a_lid['tel'] = $lid['tel'];
-
-      $a_lid['text'] = isset($lid['text']) ? $lid['text'] : '';
-      $a_lid['created_at'] = Now();
-      unset($a_lid['office_id']);
-      if ($a_lid['tel']) {
-        DB::table('logs')->insert($a_lid);
+      } else {
+        $a_lid['lid_id'] = $lid['id'];
+        $a_lid['tel'] = $lid['tel'];
+        $a_lid['text'] = isset($lid['text']) ? $lid['text'] : '';
+        $a_lid['created_at'] = Now();
+        unset($a_lid['office_id']);
+        if ($a_lid['tel']) {
+          DB::table('logs')->insert($a_lid);
+        }
       }
     }
-
-
-
     if ($res) {
       return response('Lids updated', 200);
     }
