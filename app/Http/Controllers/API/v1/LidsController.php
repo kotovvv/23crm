@@ -239,6 +239,11 @@ class LidsController extends Controller
       }
       $res =  DB::table('lids')->where('id', $lid['id'])->update($a_lid);
       if (isset($data['dellog']) && $data['dellog'] == 1) {
+        $clear_lid = [
+          'text' => '',
+          'qtytel' => 0,
+        ];
+        $res =  DB::table('lids')->where('id', $lid['id'])->update($clear_lid);
         Log::where('lid_id', $lid['id'])->delete();
       }
 
