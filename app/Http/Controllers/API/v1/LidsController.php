@@ -20,9 +20,7 @@ class LidsController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
-  {
-  }
+  public function index() {}
 
   public function provider_importlid(Request $request)
   {
@@ -228,11 +226,8 @@ class LidsController extends Controller
   public function updatelids(Request $request)
   {
     $data = $request->all();
-    // $data['data']['updated_at'] = Now();
     $res = 0;
     foreach ($data['data'] as $lid) {
-
-
       $a_lid = [
         'status_id' => $lid['status_id'],
         'user_id' => $lid['user_id'],
@@ -243,7 +238,9 @@ class LidsController extends Controller
         $a_lid['text'] = $lid['text'];
       }
       $res =  DB::table('lids')->where('id', $lid['id'])->update($a_lid);
-
+      if (isset($data['dellog']) && $data['dellog'] == 1) {
+        Log::where('lid_id', $lid['id'])->delete();
+      }
 
       $a_lid['lid_id'] = $lid['id'];
       $a_lid['tel'] = $lid['tel'];
@@ -255,6 +252,9 @@ class LidsController extends Controller
         DB::table('logs')->insert($a_lid);
       }
     }
+
+
+
     if ($res) {
       return response('Lids updated', 200);
     }
@@ -279,9 +279,11 @@ class LidsController extends Controller
 
       if (isset($lid['name'])) {
         $n_lid->name = substr(trim($lid['name']), 0, 50);
+        //$n_lid->name = mb_convert_encoding(substr(trim($lid['name']), 0, 50), 'WINDOWS-1251', 'UTF-8');
       }
       if (isset($lid['lastname'])) {
         $n_lid->name = $n_lid->name . ' ' . substr(trim($lid['lastname']), 0, 50);
+        //$n_lid->name = $n_lid->name . ' ' . mb_convert_encoding(substr(trim($lid['lastname']), 0, 50), 'WINDOWS-1251', 'UTF-8');
         $n_lid->name = substr($n_lid->name, 0, 50);
       }
 
@@ -645,7 +647,7 @@ FROM
     INNER JOIN `lids` l
         ON (d.`lid_id` = l.`id`)
 WHERE (l.`provider_id` = '" . $f_key->id . "'
-    AND d.`created_at` BETWEEN '" . $date[0] . " 00:00:00' AND  '" . $date[1] . " 23:59:59')";
+    AND d.`created_at` BETWEEN '" . str_replace('\'', '', $date[0]) . " 00:00:00' AND  '" . str_replace('\'', '', $date[1]) . " 23:59:59')";
 
     $leads =  DB::select(DB::raw($sql));
     $response = [];

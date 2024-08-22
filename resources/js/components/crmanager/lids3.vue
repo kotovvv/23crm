@@ -179,8 +179,6 @@
         </v-col>
         <v-col>
           <p>Фильтр по базам</p>
-          <!-- item-text="fio"
-          item-value="id" -->
           <v-autocomplete
             v-model="filter_load_mess"
             :items="load_mess"
@@ -190,15 +188,6 @@
             @change="getPage(0)"
             clearable
           ></v-autocomplete>
-          <!-- <v-select
-            v-model="filter_load_mess"
-            :items="load_mess"
-            @change="getPage(0)"
-            outlined
-            rounded
-            clearable
-          >
-          </v-select> -->
         </v-col>
         <v-col v-if="$props.user.role_id == 1 && $props.user.office_id == 0">
           <p>Фильтр office</p>
@@ -214,14 +203,6 @@
               getPage(0);
             "
           >
-            <!--
-            <template v-slot:selection="{ item, index }">
-              <v-chip v-if="index === 0">
-                <span>{{ item.name }}</span><span v-if="index === 1" class="grey--text text-caption">
-                (+{{ filterOffices.length - 1 }} )
-              </span>
-              </v-chip>
-            </template>-->
           </v-select>
         </v-col>
       </v-row>
@@ -442,7 +423,7 @@
                 class="border ma-2"
                 outlined
                 rounded
-                @click="changeStatus"
+                @click="dialog = true"
               >
                 Сменить статус
               </v-btn>
@@ -560,6 +541,45 @@
         </div>
       </v-col>
     </v-row>
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Удалить логи</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row> </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              dellog = 1;
+              changeStatus();
+              dialog = false;
+            "
+          >
+            Да
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              dellog = 0;
+              changeStatus();
+              dialog = false;
+            "
+          >
+            Нет
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -571,6 +591,8 @@ import logtel from "../manager/logtel";
 export default {
   props: ["user"],
   data: () => ({
+    dellog: 0,
+    dialog: false,
     savedates: true,
     akkvalue: [],
     loading: false,
@@ -1319,6 +1341,7 @@ export default {
           e.status = self.statuses.find((s) => s.id == e.status_id).name;
         });
         send.data = this.selected.map((e) => e);
+        send.dellog = this.dellog;
         this.changeLids(send);
       }
     },

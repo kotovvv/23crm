@@ -14,9 +14,7 @@
       <div>
         <v-expansion-panels multiple v-model="panel">
           <v-expansion-panel
-            v-for="group in groups.filter((g) => {
-              return ![1144, 1063].includes(g.id);
-            })"
+            v-for="group in groups"
             :key="group.id"
             :expand="true"
           >
@@ -247,9 +245,10 @@ export default {
       axios
         .post("/api/getusers", [])
         .then((res) => {
-          let data = res.data.filter((d) => {
-            return d.office_id == 2;
-          });
+let data = res.data
+          //let data = res.data.filter((d) => {
+           // return d.office_id == 2;
+         // });
           self.users = data.map(
             ({
               name,
