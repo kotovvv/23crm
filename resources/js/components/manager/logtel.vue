@@ -18,7 +18,7 @@
         <tbody>
           <tr v-for="(item, ix) in logs" :key="ix">
             <td>{{ item.created_at }}</td>
-            <!-- <td>{{ item.fio }}</td> -->
+            <td>{{ item.fio }}</td>
             <td>
               <div class="d-flex">
                 <i
