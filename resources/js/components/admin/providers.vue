@@ -60,7 +60,7 @@
                       ></v-select>
                     </v-col>
 
-                    <v-col cols="12">
+                    <v-col cols="6">
                       <v-select
                         :items="users"
                         v-model="editedItem.user_id"
@@ -68,6 +68,12 @@
                         item-value="id"
                         label="Пользователь для импорта"
                       ></v-select>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-switch
+                        v-model="editedItem.dup"
+                        label="Разрешить дупликаты:"
+                      ></v-switch>
                     </v-col>
                     <v-col cols="12">
                       <v-textarea
@@ -158,6 +164,7 @@ export default {
       related_users_id: [],
       office_id: [],
       user_id: 0,
+      dup: 0,
     },
     defaultItem: {
       name: "",
@@ -166,6 +173,7 @@ export default {
       related_users_id: [],
       office_id: [],
       user_id: 0,
+      dup: 0,
     },
     offices: [],
   }),

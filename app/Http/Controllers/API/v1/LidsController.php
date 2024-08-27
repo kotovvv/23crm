@@ -327,6 +327,10 @@ class LidsController extends Controller
       $f_lid =  Lid::where('tel', '=', "" . $lid['tel'])->get();
 
       if (!$f_lid->isEmpty()) {
+        $dup = Provider::where('id', $data['provider_id'])->value('dup');
+        if ($dup == 0) {
+          continue;
+        }
         $n_lid->status_id = 22;
       }
       if ($n_lid->provider_id == '76') {
@@ -864,7 +868,9 @@ WHERE (l.`provider_id` = '" . $f_key->id . "'
     $f_lid =  Lid::where('tel', '=', $n_lid->tel)->get();
 
     if (!$f_lid->isEmpty()) {
-      return response('Duplicate', 200);
+      if (!$provider->dup) {
+        return response('Duplicate', 200);
+      }
     }
 
     if (isset($req['umcfields']['email']) && strlen($req['umcfields']['email']) > 1) {
@@ -949,6 +955,13 @@ WHERE (l.`provider_id` = '" . $f_key->id . "'
       $geo = $this->getGeo($n_lid->tel);
     }
 
+    $f_lid =  Lid::where('tel', '=', $n_lid->tel)->get();
+
+    if (!$f_lid->isEmpty()) {
+      if (!$provider->dup) {
+        return response('Duplicate', 200);
+      }
+    }
     if ($email) {
       $n_lid->email = $email;
     }
@@ -999,6 +1012,13 @@ WHERE (l.`provider_id` = '" . $f_key->id . "'
     if (isset($req['umcfields[phone]']) && strlen($req['umcfields[phone]']) > 1) {
       $n_lid->tel =  $req['umcfields[phone]'];
       $geo = $this->getGeo($n_lid->tel);
+    }
+    $f_lid =  Lid::where('tel', '=', $n_lid->tel)->get();
+
+    if (!$f_lid->isEmpty()) {
+      if (!$provider->dup) {
+        return response('Duplicate', 200);
+      }
     }
 
     if (isset($req['umcfields[email]']) && strlen($req['umcfields[email]']) > 1) {
@@ -1052,6 +1072,10 @@ WHERE (l.`provider_id` = '" . $f_key->id . "'
     $f_lid =  Lid::where('tel', '=', $n_lid->tel)->get();
 
     if (!$f_lid->isEmpty()) {
+      if (!$provider->dup) {
+        $res['status'] = 'duplicat';
+        return response($res);
+      }
       $n_lid->status_id = 22;
     }
     if ($n_lid->provider_id == '76') {
@@ -1100,7 +1124,7 @@ WHERE (l.`provider_id` = '" . $f_key->id . "'
     $f_key =   DB::table('apikeys')->where('api_key', $req['api_key'])->first();
 
     if (!$f_key) return response(['status' => 'Key incorect'], 403);
-    $res['result'] = 'Error';
+    $res['result'] = 'No leads';
     $date = '';
     if (isset($req['date'])) {
       $date = $req['date'] == 'y' ? ', l.created_at , l.updated_at' : '';

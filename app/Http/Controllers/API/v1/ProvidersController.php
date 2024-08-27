@@ -107,6 +107,11 @@ class ProvidersController extends Controller
     } else {
       $data['baer'] = '';
     }
+    if (isset($data['dup'])) {
+      $data['dup'] = $data['dup'];
+    } else {
+      $data['dup'] = '';
+    }
     $data['office_id'] = json_encode($data['office_id']);
 
     if (isset($data['password'])) {
