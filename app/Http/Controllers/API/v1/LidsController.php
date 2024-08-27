@@ -10,7 +10,7 @@ use App\Models\Log;
 use App\Models\Depozit;
 use App\Models\User;
 use App\Models\Provider;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Debugbar;
 
 class LidsController extends Controller
