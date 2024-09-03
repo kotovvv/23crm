@@ -1402,11 +1402,11 @@ export default {
             return a_prov.includes(i.id);
           });
 
-          if (self.$attrs.user.group_id > 0) {
-            self.imports = self.imports.filter(
-              (i) => i.group_id == self.$attrs.user.group_id
-            );
-          }
+          // if (self.$attrs.user.group_id > 0) {
+          //   self.imports = self.imports.filter(
+          //     (i) => i.group_id == self.$attrs.user.group_id
+          //   );
+          // }
           self.ImportedProvLids();
           self.loading = false;
         })
