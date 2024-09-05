@@ -323,6 +323,7 @@ class LidsController extends Controller
         $n_lid->afilyator = '';
       }
       if (isset($data['provider_id'])) $n_lid->provider_id = $data['provider_id'];
+      $n_lid->status_id = 8;
       if (isset($data['status_id']))  $n_lid->status_id = $data['status_id'];
       $f_lid =  Lid::where('tel', '=', "" . $lid['tel'])->get();
 
