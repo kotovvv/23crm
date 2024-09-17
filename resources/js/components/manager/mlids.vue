@@ -920,10 +920,10 @@ export default {
       send_el.id = eli.id;
       send_el.tel = eli.tel;
       send_el.text = self.text_message;
-      if (self.depozit_val > 0) {
+      if (self.depozit_val > 0 && self.selectedStatus == 10) {
         send_el.text = self.depozit_val + ": " + send_el.text;
       }
-      if (self.pending_val > 0) {
+      if (self.pending_val > 0 && self.selectedStatus == 20) {
         send_el.text = self.pending_val + ": " + send_el.text;
       }
       send_el.status_id = self.selectedStatus;
@@ -940,10 +940,11 @@ export default {
           console.log(error);
         });
       self.setTime();
-      if (self.depozit_val > 0) {
+      if (self.depozit_val > 0 && self.selectedStatus == 10) {
         self.setDepozit();
       }
-      if (self.pending_val > 0) {
+      if (self.pending_val > 0 && self.selectedStatus == 20) {
+        console.log(self.pending_val + "||" + self.selectedStatus);
         self.setPending();
       }
     },
